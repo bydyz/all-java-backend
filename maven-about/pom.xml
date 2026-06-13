@@ -5,22 +5,10 @@
   <groupId>org.rc</groupId>
   <artifactId>maven-about</artifactId>
   <version>1.0</version>
+  <packaging>pom</packaging>
 
-  <dependencies>
-    <!-- Source: https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.13.4</version>
-      <scope>test</scope>
-    </dependency>
+  <modules>
+    <module>lombok-learn</module>
+  </modules>
 
-    <!-- 必须添加的引擎依赖，负责在Maven中执行测试 -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.13.4</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
 </project>
