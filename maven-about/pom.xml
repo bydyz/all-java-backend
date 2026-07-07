@@ -10,6 +10,7 @@
 
   <modules>
     <module>lombok-learn</module>
+    <module>mybatis-plus</module>
   </modules>
 
 </project>

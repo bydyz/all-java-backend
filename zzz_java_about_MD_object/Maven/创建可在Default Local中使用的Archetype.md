@@ -12,3 +12,5 @@
     ![第一张图片](./Image/customArchetype2.png "第一张图片")
 
 3. 在 `simplest-module-template`文件夹下，执行 `mvn install`  即创建了 自定义Archetype , 后续即可使用
+
+    ![第一张图片](./Image/customArchetype3.png "第一张图片")
