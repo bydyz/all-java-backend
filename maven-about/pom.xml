@@ -5,6 +5,7 @@
   <groupId>org.rc</groupId>
   <artifactId>maven-about</artifactId>
   <version>1.0</version>
+
   <packaging>pom</packaging>
 
   <modules>
