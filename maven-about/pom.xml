@@ -11,6 +11,10 @@
   <modules>
     <module>lombok-learn</module>
     <module>mybatis-plus</module>
+    <module>mybatis-plus-mysql</module>
+    <module>spring-boot-starter-web-learn</module>
+    <module>spring-boot-starter-web-collect</module>
+    <module>spring-boot-starter-parent</module>
   </modules>
 
 </project>
