@@ -5,6 +5,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import org.example.entity.User;
+import org.example.repository.UserRepository;
+import org.example.service.UserService;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;

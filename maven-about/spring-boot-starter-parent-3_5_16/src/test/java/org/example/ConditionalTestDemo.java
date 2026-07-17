@@ -58,7 +58,7 @@ class ConditionalTestDemo {
      */
     @Test
     @DisplayName("仅在 Java 17+ 上执行")
-    @EnabledOnJre(min = JRE.JAVA_17)
+    @EnabledForJreRange(min = JRE.JAVA_17)
     void testOnJava17Plus() {
         int version = Runtime.version().feature();
         assertTrue(version >= 17, "Java 版本应该 >= 17");
@@ -115,7 +115,7 @@ class ConditionalTestDemo {
     @Test
     @DisplayName("组合条件测试 - Windows + Java 17+")
     @EnabledOnOs(OS.WINDOWS)
-    @EnabledOnJre(min = JRE.JAVA_17)
+    @EnabledForJreRange(min = JRE.JAVA_17)
     void testCombinedConditions() {
         String os = System.getProperty("os.name").toLowerCase();
         int version = Runtime.version().feature();
