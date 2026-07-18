@@ -5,7 +5,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-// 扫描指定包下的 Mapper 接口，自动注册为 MyBatis 的 Mapper
 @MapperScan("com.rc.system.mapper")
 public class Step1 {
 
