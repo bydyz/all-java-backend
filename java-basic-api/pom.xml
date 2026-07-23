@@ -12,7 +12,6 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.13.4</version>
-      <scope>test</scope>
     </dependency>
 
     <!-- 必须添加的引擎依赖，负责在Maven中执行测试 -->
@@ -20,7 +19,6 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <version>5.13.4</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
