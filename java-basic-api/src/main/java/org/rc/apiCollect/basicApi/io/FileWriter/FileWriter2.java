@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.io.FileWriter;
+package org.rc.apiCollect.basicApi.io.FileWriter;
 
 import org.junit.jupiter.api.Test;
 

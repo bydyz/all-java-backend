@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.io.FileReader;
+package org.rc.apiCollect.basicApi.io.FileReader;
 
 // 读取 hello.txt 文件中的字符数据，并显示在控制台上
 

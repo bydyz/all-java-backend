@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.util.Map;
+package org.rc.apiCollect.basicApi.util.Map;
 
 import org.junit.jupiter.api.Test;
 

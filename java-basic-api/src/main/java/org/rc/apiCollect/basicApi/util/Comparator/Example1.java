@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.util.Comparator;
+package org.rc.apiCollect.basicApi.util.Comparator;
 
 import org.junit.jupiter.api.Test;
 

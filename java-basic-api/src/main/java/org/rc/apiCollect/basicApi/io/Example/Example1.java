@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.io.Example;
+package org.rc.apiCollect.basicApi.io.Example;
 // 实现图片加密解密操作。
 
 // buffer[i] = (byte) (buffer[i] ^ 5);

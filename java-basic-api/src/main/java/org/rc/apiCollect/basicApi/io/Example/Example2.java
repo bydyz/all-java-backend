@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.io.Example;
+package org.rc.apiCollect.basicApi.io.Example;
 
 // import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;

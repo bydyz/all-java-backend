@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.io.FileInputStream;
+package org.rc.apiCollect.basicApi.io.FileInputStream;
 
 import org.junit.jupiter.api.Test;
 

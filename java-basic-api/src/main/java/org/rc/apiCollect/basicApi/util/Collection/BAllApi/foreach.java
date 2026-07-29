@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.util.Collection.BAllApi;
+package org.rc.apiCollect.basicApi.util.Collection.BAllApi;
 
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.util.Scanner;
+package org.rc.apiCollect.basicApi.util.Scanner;
 
 import org.junit.jupiter.api.Test;
 

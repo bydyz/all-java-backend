@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.io.File;
+package org.rc.apiCollect.basicApi.io.File;
 
 import org.junit.jupiter.api.Test;
 

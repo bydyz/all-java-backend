@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.util.Arrays.littleExample;
+package org.rc.apiCollect.basicApi.util.Arrays.littleExample;
 
 import org.junit.jupiter.api.Test;
 

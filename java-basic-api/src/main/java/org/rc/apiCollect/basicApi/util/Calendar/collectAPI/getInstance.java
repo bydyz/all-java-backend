@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.util.Calendar.collectAPI;
+package org.rc.apiCollect.basicApi.util.Calendar.collectAPI;
 
 import org.junit.jupiter.api.Test;
 

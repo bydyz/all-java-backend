@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.time.Duration;
+package org.rc.apiCollect.basicApi.time.Duration;
 
 import org.junit.jupiter.api.Test;
 

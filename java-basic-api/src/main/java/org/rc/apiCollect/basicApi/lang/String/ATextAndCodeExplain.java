@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.lang.String;
+package org.rc.apiCollect.basicApi.lang.String;
 
 // 不可变字符序列：String
 // java.lang.String 类代表字符串。Java 程序中所有的字符串文字（例如 "hello" ）都可以看作是实现此类的实例。

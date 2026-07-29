@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.time.LocalDateTime;
+package org.rc.apiCollect.basicApi.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 

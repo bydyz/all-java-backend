@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.text.NumberFormat.collectAPI;
+package org.rc.apiCollect.basicApi.text.NumberFormat.collectAPI;
 
 import org.junit.jupiter.api.Test;
 

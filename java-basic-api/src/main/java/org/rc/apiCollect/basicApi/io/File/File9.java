@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.io.File;
+package org.rc.apiCollect.basicApi.io.File;
 // 练习 1：利用 File 构造器，new 一个文件目录 file
 //     1) 在其中创建多个文件和目录
 //     2) 编写方法，实现删除 file 中指定文件的操作

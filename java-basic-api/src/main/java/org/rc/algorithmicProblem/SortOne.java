@@ -1,4 +1,4 @@
-﻿package org.rc.algorithmicProblem;
+package org.rc.algorithmicProblem;
 
 import org.junit.jupiter.api.Test;
 

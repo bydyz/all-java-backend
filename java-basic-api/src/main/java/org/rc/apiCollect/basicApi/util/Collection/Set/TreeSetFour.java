@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.util.Collection.Set;
+package org.rc.apiCollect.basicApi.util.Collection.Set;
 // 定义一个 Employee 类。 该类包含：private 成员变量 name,age,birthday，其中birthday 为 MyDate1 类的对象； 并为每一个属性定义 getter, setter 方法； 并重写 toString 方法输出 name, age, birthday
 //
 // MyDate1 类包含: private 成员变量 year,month,day；并为每一个属性定义 getter,setter 方法；

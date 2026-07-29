@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.util.Arrays.collectAPI;
+package org.rc.apiCollect.basicApi.util.Arrays.collectAPI;
 
 import org.junit.jupiter.api.Test;
 

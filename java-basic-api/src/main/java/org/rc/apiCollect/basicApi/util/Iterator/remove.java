@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.util.Iterator;
+package org.rc.apiCollect.basicApi.util.Iterator;
 
 import org.junit.jupiter.api.Test;
 

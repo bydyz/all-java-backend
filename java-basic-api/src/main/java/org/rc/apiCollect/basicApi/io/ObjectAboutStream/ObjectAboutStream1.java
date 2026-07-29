@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.io.ObjectAboutStream;
+package org.rc.apiCollect.basicApi.io.ObjectAboutStream;
 
 import org.junit.jupiter.api.Test;
 import java.io.IOException;

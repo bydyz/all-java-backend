@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.time.ZonedDateTime;
+package org.rc.apiCollect.basicApi.time.ZonedDateTime;
 
 import org.junit.jupiter.api.Test;
 

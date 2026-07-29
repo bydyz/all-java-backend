@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.util.Collection.Set;
+package org.rc.apiCollect.basicApi.util.Collection.Set;
 
 import org.junit.jupiter.api.Test;
 

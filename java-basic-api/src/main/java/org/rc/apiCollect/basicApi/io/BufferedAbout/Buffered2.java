@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.io.BufferedAbout;
+package org.rc.apiCollect.basicApi.io.BufferedAbout;
 
 import org.junit.jupiter.api.Test;
 

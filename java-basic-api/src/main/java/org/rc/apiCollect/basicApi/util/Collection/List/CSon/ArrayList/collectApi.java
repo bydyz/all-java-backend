@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.util.Collection.List.CSon.ArrayList;
+package org.rc.apiCollect.basicApi.util.Collection.List.CSon.ArrayList;
 
 import org.junit.jupiter.api.Test;
 

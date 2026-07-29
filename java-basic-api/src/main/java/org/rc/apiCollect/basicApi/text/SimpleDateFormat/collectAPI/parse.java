@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.text.SimpleDateFormat.collectAPI;
+package org.rc.apiCollect.basicApi.text.SimpleDateFormat.collectAPI;
 
 import org.junit.jupiter.api.Test;
 

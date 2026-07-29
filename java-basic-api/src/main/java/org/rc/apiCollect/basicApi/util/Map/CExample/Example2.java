@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.basicApi.util.Map.CExample;
+package org.rc.apiCollect.basicApi.util.Map.CExample;
 
 import org.junit.jupiter.api.Test;
 

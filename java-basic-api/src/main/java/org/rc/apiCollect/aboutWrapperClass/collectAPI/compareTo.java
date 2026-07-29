@@ -1,4 +1,4 @@
-﻿package org.rc.apiCollect.aboutWrapperClass.collectAPI;
+package org.rc.apiCollect.aboutWrapperClass.collectAPI;
 
 import org.junit.jupiter.api.Test;
 
