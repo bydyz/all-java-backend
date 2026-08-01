@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.rc</groupId>
+        <artifactId>common</artifactId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>service-util</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.rc</groupId>
+            <artifactId>common-util</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+        <!--mysql-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <!-- swagger的依赖包 -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+        </dependency>
+        <!--
+            仅有这个依赖 无法使用 http://localhost:8800/swagger-ui.html 访问api信息，因为它没有包含 springfox-swagger-ui（负责提供原生 Swagger UI 页面），所以 /swagger-ui.html 路径无对应静态资源。
+
+            解决方案：
+             改用 http://localhost:8800/doc.html 访问（Knife4j 增强 UI，功能更多，本项目推荐）
+             如需原生 Swagger UI，在 service-system 的 pom.xml 中添加：
+        -->
+
+    </dependencies>
+</project>

@@ -1,11 +1,19 @@
 package org.rc.algorithmicProblem;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
 public class GetBiggestString {
-    // 返回一个最大长度的相同子串
+
+    /**
+     * 返回一个最大长度的相同子串
+     *
+     * @param str1
+     * @param str2
+     * @return
+     */
     public String getMaxSameSubString(String str1, String str2) {
         if (str1 != null && str2 != null) {
             String maxStr = (str1.length() > str2.length()) ? str1 : str2;
@@ -25,9 +33,18 @@ public class GetBiggestString {
         }
         return null;
     }
+    // break：只跳出当前一层循环
+    // continue：只跳过当前循环的本次迭代
+    // return：结束整个方法
 
 
-    // 返回 list
+    /**
+     * 返回一个最大长度的相同子串
+     *
+     * @param str1
+     * @param str2
+     * @return String[]
+     */
     public String[] getMaxSameSubString1(String str1, String str2) {
         if (str1 != null && str2 != null) {
             StringBuffer sBuffer = new StringBuffer();
@@ -84,6 +101,7 @@ public class GetBiggestString {
     public void testGetMaxSameSubString() {
         String str1 = "abcwerthelloyuiodef";
         String str2 = "cvhellobnmiodef";
+        System.out.println(getMaxSameSubString(str1, str2));
         String[] strs = getMaxSameSubString1(str1, str2);
         System.out.println(Arrays.toString(strs));
     }
