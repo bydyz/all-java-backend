@@ -1,6 +1,6 @@
 # 编辑的内容
 
-## 添加 service接口  service实现类  service测试  controller
+## 新添加 service接口  service实现类  service测试  controller
 
 1. E:\Project\AAA_All_MINE\all-java-backend\guigu-auth-parent-learn\step2\service-system\src\main\java\com\rc\system\controller\SysRoleController.java
 2. E:\Project\AAA_All_MINE\all-java-backend\guigu-auth-parent-learn\step2\service-system\src\main\java\com\rc\system\service\SysRoleService.java
