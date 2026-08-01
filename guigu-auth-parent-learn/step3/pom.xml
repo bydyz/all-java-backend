@@ -11,9 +11,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>common</module>
-        <module>model</module>
-        <module>service-system</module>
+        <module>common-3</module>
+        <module>model-3</module>
+        <module>service-system-3</module>
     </modules>
 
     <parent>
