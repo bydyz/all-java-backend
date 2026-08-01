@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 的值应为 mapper的包的路径 -->
+<mapper namespace="com.rc.system.mapper.SysRoleMapper">
+
+    <!-- 自定义返回类型 type 的值为返回值类型，此处是要返回的实体类的包路径 autoMapping是自动映射 -->
+    <resultMap id="RoleMap" type="com.rc.model.system.SysRole" autoMapping="true"></resultMap>
+    <!--条件分页查询   id是mapper中的方法，resultMap是返回值类型，此处用上面的标签指代了-->
+    <select id="selectPage" resultMap="RoleMap">
+        SELECT id,role_name,role_code,description,create_time,update_time,is_deleted
+        FROM sys_role
+        <where>
+            <if test="vo.roleName != null and vo.roleName != ''">
+                and role_name LIKE CONCAT('%',#{vo.roleName},'%')
+            </if>
+            and is_deleted = 0
+        </where>
+        order by id desc
+    </select>
+
+</mapper>
