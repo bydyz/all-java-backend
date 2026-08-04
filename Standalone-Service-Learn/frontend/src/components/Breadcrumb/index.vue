@@ -1,0 +1,34 @@
+<template>
+  <el-breadcrumb separator="/">
+    <el-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="item.path">
+      <span v-if="index === breadcrumbs.length - 1" class="no-redirect">{{ item.meta?.title }}</span>
+      <router-link v-else :to="item.redirect || item.path">{{ item.meta?.title }}</router-link>
+    </el-breadcrumb-item>
+  </el-breadcrumb>
+</template>
+
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+import { useRoute, type RouteLocationMatched } from 'vue-router'
+
+const route = useRoute()
+const breadcrumbs = ref<RouteLocationMatched[]>([])
+
+const getBreadcrumbs = () => {
+  const matched = route.matched.filter(item => item.meta && item.meta.title)
+  breadcrumbs.value = matched
+}
+
+watch(
+  () => route.path,
+  () => getBreadcrumbs(),
+  { immediate: true }
+)
+</script>
+
+<style lang="scss" scoped>
+.no-redirect {
+  color: #97a8be;
+  cursor: text;
+}
+</style>
