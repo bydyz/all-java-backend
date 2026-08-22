@@ -1,11 +1,13 @@
 package com.rc.rbac.security;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * 安全工具类
  */
+@Slf4j
 public class SecurityUtils {
     
     /**
@@ -13,6 +15,10 @@ public class SecurityUtils {
      */
     public static String getUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.debug("SecurityUtils - authentication: {}, principal: {}, name: {}", 
+                authentication != null ? authentication.getClass().getSimpleName() : "null",
+                authentication != null ? authentication.getPrincipal() : "null",
+                authentication != null ? authentication.getName() : "null");
         if (authentication != null && authentication.isAuthenticated()) {
             return authentication.getName();
         }

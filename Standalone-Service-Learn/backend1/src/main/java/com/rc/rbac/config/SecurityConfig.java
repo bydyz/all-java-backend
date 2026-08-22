@@ -1,5 +1,7 @@
 package com.rc.rbac.config;
 
+import com.rc.rbac.security.JwtAccessDeniedHandler;
+import com.rc.rbac.security.JwtAuthenticationEntryPoint;
 import com.rc.rbac.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +29,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     
     /**
      * 安全过滤器链配置
@@ -44,9 +48,15 @@ public class SecurityConfig {
                     "/doc.html",
                     "/webjars/**",
                     "/swagger-resources/**",
-                    "/v3/api-docs/**"
+                    "/v3/api-docs/**",
+                    "/knife4j/**",
+                    "/error"
                 ).permitAll()
                 .anyRequest().authenticated()
+            )
+            .exceptionHandling(exception -> exception
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         

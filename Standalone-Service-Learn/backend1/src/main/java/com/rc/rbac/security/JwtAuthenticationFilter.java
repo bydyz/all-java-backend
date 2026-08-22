@@ -36,21 +36,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = getJwtFromRequest(request);
+            log.debug("JWT token from request: {}", jwt != null ? jwt.substring(0, Math.min(jwt.length(), 20)) + "..." : "null");
             
-            if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
-                // 检查 token 是否在 Redis 中
-                String tokenKey = "token:" + jwt;
-                String userId = redisTemplate.opsForValue().get(tokenKey);
+            if (StringUtils.hasText(jwt)) {
+                boolean valid = jwtTokenProvider.validateToken(jwt);
+                log.debug("Token valid: {}", valid);
                 
-                if (userId != null) {
-                    String username = jwtTokenProvider.getUsernameFromToken(jwt);
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                if (valid) {
+                    String tokenKey = "token:" + jwt;
+                    String userId = redisTemplate.opsForValue().get(tokenKey);
+                    log.debug("Redis lookup userId: {}", userId);
                     
-                    UsernamePasswordAuthenticationToken authentication = 
-                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    if (userId != null) {
+                        String username = jwtTokenProvider.getUsernameFromToken(jwt);
+                        log.debug("Username from token: {}", username);
+                        
+                        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                        
+                        UsernamePasswordAuthenticationToken authentication = 
+                                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                        log.debug("Authentication set for user: {}", username);
+                    }
                 }
             }
         } catch (Exception ex) {

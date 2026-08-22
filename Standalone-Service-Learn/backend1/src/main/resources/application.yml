@@ -31,6 +31,10 @@ springdoc:
     path: /swagger-ui.html
   api-docs:
     path: /v3/api-docs
+  group-configs:
+    - group: default
+      paths-to-match: /**
+      packages-to-scan: com.rc.rbac.controller
 knife4j:
   enable: true
   setting:

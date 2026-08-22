@@ -265,6 +265,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public LoginResponse.UserInfo getCurrentUserInfo() {
         // 从 SecurityContext 获取当前用户名
         String username = SecurityUtils.getUsername();
+        System.out.println("=== getCurrentUserInfo username: " + username);
         if (username == null) {
             throw new RuntimeException("用户未登录");
         }
