@@ -1,8 +1,9 @@
 <template>
-  <div class="layout-container">
+  <el-container class="layout-container">
     <!-- 侧边栏 -->
     <el-aside :width="isCollapse ? '64px' : '210px'" class="layout-aside">
       <div class="logo">
+        <el-icon size="24"><Monitor /></el-icon>
         <span v-show="!isCollapse" class="logo-title">RBAC 管理系统</span>
       </div>
       <el-menu
@@ -41,7 +42,7 @@
     </el-aside>
     
     <!-- 主体 -->
-    <div class="layout-main" :class="{ 'is-collapse': isCollapse }">
+    <el-container class="layout-main">
       <!-- 顶部导航 -->
       <div class="layout-header">
         <div class="header-left">
@@ -77,8 +78,8 @@
           </transition>
         </router-view>
       </div>
-    </div>
-  </div>
+    </el-container>
+  </el-container>
 </template>
 
 <script setup lang="ts">
@@ -141,7 +142,6 @@ const handleCommand = async (command: string) => {
 
 <style lang="scss" scoped>
 .layout-container {
-  display: flex;
   height: 100vh;
 }
 
@@ -155,15 +155,10 @@ const handleCommand = async (command: string) => {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #2b2f3a;
-    
-    img {
-      width: 32px;
-      height: 32px;
-    }
+    gap: 10px;
+    color: #fff;
     
     .logo-title {
-      color: #fff;
       font-size: 16px;
       font-weight: bold;
       white-space: nowrap;
@@ -176,15 +171,9 @@ const handleCommand = async (command: string) => {
 }
 
 .layout-main {
-  flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: margin-left 0.3s;
-  
-  &.is-collapse {
-    margin-left: -146px;
-  }
 }
 
 .layout-header {
