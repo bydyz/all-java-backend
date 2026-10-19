@@ -1,0 +1,39 @@
+# .editorconfig
+# 跨IDE基础格式约定 —— 第一道防线
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+max_line_length = 120
+
+[*.{yml,yaml,json,xml,html,css,md}]
+indent_size = 2
+
+[*.java]
+# Java 特有的基础约定
+indent_size = 4
+ij_continuation_indent_size = 8
+ij_java_align_consecutive_assignments = false
+ij_java_align_consecutive_variable_declarations = false
+ij_java_align_group_field_declarations = false
+ij_java_align_multiline_parameters = true
+ij_java_block_brace_style = end_of_line
+ij_java_blank_lines_after_package = 1
+ij_java_blank_lines_after_imports = 1
+ij_java_blank_lines_around_class = 1
+ij_java_blank_lines_around_method = 1
+ij_java_class_count_to_use_import_on_demand = 999
+ij_java_layout_static_imports_separately = true
+
+# 关闭行注释顶格，使其跟随代码缩进
+ij_java_line_comment_at_first_column = false
+# 如果块注释（/* */）也顶格，一并关闭
+ij_java_block_comment_at_first_column = false
+
+# 建议同时开启：在注释符号 // 后自动补一个空格
+ij_java_line_comment_add_space = true
