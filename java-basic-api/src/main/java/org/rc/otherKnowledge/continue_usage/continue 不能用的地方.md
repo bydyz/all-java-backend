@@ -91,6 +91,7 @@ i=5 这轮结束
 ## 四、lambda 内部不能跳到外部循环
 
 lambda 有独立的执行边界，`continue` / `break` 都**不能跨过 lambda 边界**作用到外部循环。
+continue / break 不作用于 lambda，也不能跳出 lambda 而作用与外部的循环
 
 ```java
 public void test() {
