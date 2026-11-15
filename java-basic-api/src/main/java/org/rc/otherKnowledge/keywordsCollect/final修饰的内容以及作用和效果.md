@@ -1,431 +1,504 @@
-# Java 中 `static` 关键字详解
+# Java 中 final 修饰的内容、作用与效果详解
 
-`static` 是 Java 中的修饰符，核心含义是 **"属于类，而不属于某个实例"**。凡是 `static` 修饰的内容，都在**类加载时**
-初始化，被该类所有实例共享，可以直接通过 `类名.成员` 访问，无需创建对象。
+下面按“final 能修饰什么”逐一说明，并给出代码。先记住一句话：**final 的核心是“只能赋值一次 / 不能被继承 /
+不能被重写”，但不等于对象内容完全不可变，也不自动等于线程安全。**
 
----
+## 1. final 总览
 
-## 一、`static` 可以修饰哪些内容？
-
-| 修饰对象 | 说明                   | 引入版本     |
-|------|----------------------|----------|
-| 成员变量 | 类变量（静态变量），所有实例共享     | Java 1.0 |
-| 成员方法 | 类方法（静态方法），无 `this`   | Java 1.0 |
-| 代码块  | 静态代码块，类加载时执行一次       | Java 1.0 |
-| 内部类  | 静态内部类，不依赖外部类实例       | Java 1.0 |
-| 导入   | `import static` 静态导入 | Java 5   |
-| 接口方法 | 接口中的静态方法             | Java 8   |
-
----
-
-## 二、`static` 成员变量（类变量）
-
-### 2.1 基本用法
-
-```java
-public class Counter {
-    // 静态变量：所有实例共享一份
-    public static int total = 0;
-    // 实例变量：每个对象独有一份
-    public int instanceId;
-
-    public Counter() {
-        total++;                 // 修改共享的静态变量
-        this.instanceId = total; // 每个对象有自己独立的 id
-    }
-
-    public static void main(String[] args) {
-        Counter c1 = new Counter();
-        Counter c2 = new Counter();
-        Counter c3 = new Counter();
-
-        System.out.println("total = " + Counter.total); // 3
-        System.out.println("c1.id = " + c1.instanceId); // 1
-        System.out.println("c2.id = " + c2.instanceId); // 2
-        System.out.println("c3.id = " + c3.instanceId); // 3
-
-        // 静态变量也可以通过实例访问（不推荐，易产生误解）
-        System.out.println(c1.total); // 3
-    }
-}
-```
-
-**效果：**
-
-- `total` 在**类加载**时被初始化一次，存放在 **方法区（元空间）**，与实例无关。
-- 任意实例修改 `total`，其他实例看到的都是同一个值。
-- 通过 `c1.total` 访问实际等价于 `Counter.total`，编译器会给出警告，语义上不推荐。
-
-### 2.2 静态变量与实例变量的存储区别
-
-```java
-public class Person {
-    static String species = "Homo sapiens"; // 方法区，一份
-    String name;                            // 堆中每个对象一份
-    int age;                                // 堆中每个对象一份
-}
-```
-
-```
-方法区(Metaspace)             堆(Heap)
-+-----------------+         +-----------------------+
-| species = "..." |<--------| Person1{name,age}     |
-|                 |<--------| Person2{name,age}     |
-+-----------------+         +-----------------------+
-```
+| 修饰目标            | 作用                     | 效果与注意点                               |
+|-----------------|------------------------|--------------------------------------|
+| final 类         | 类不能被继承                 | 不能与 abstract 同时使用；类中方法自然不能被覆盖        |
+| final 方法        | 方法不能被子类重写              | 可以重载；不能与 abstract 同时使用               |
+| final 成员变量/字段   | 字段只能初始化一次              | 可在声明处、实例初始化块、构造器中初始化；引用不可重新赋值        |
+| static final 字段 | 静态常量                   | 若为基本类型/String 常量表达式，可能是“编译期常量”，有内联风险 |
+| final 局部变量      | 局部变量只能赋值一次             | 可先声明后赋值；常用于 lambda/匿名内部类捕获           |
+| final 方法参数      | 参数在方法内不能重新赋值           | 可被 lambda/匿名内部类捕获                    |
+| final 引用变量      | 引用不能指向别的对象             | 对象内部状态仍可改变，如 final List 仍可 add       |
+| 接口字段            | 隐式 public static final | 接口中的字段天然是常量                          |
+| 枚举常量            | 隐式 public static final | 枚举类型不能被继承                            |
+| record 类        | 隐式 final               | record 不能被继承                         |
+| sealed 子类       | 可声明为 final             | 表示该子类不再允许被继承                         |
 
 ---
 
-## 三、`static` 成员方法（类方法）
-
-### 3.1 基本用法与限制
+## 2. final 修饰类：类不能被继承；例如 String 类、System 类、StringBuffer 类
 
 ```java
-public class MathUtil {
-
-    private static final double PI = 3.1415926;
-
-    // 静态方法：工具方法常用，不需要对象状态
-    public static double circleArea(double r) {
-        return PI * r * r;
+final class FinalClass {
+    void hello() {
+        System.out.println("hello");
     }
-
-    // 静态方法不能直接访问非静态成员
-    private int count = 0;
-
-    // public static void bad() {
-    //     count++;          // ❌ 编译错误：无法从静态上下文引用非静态变量
-    //     this.count++;     // ❌ 编译错误：静态方法没有 this
-    // }
 }
 
-// 直接通过类名调用，无需 new
-double area = MathUtil.circleArea(2.0);
+// 编译错误：Cannot inherit from final 'FinalClass'
+// class SubClass extends FinalClass {
+// }
 ```
 
-### 3.2 静态方法不能被重写，只能被隐藏
+效果：
+
+- `FinalClass` 不能被任何类继承。
+- 因为不能被继承，所以它的方法也不可能被子类覆盖。
+- `final` 类不能同时声明为 `abstract`，两者矛盾。
+
+---
+
+## 3. final 修饰方法：方法不能被重写
 
 ```java
 class Parent {
-    public static void hello() { System.out.println("Parent.hello"); }
-    public        void hi()    { System.out.println("Parent.hi");    }
+    final void f() {
+        System.out.println("Parent.f");
+    }
+
+    void g() {
+        System.out.println("Parent.g");
+    }
 }
 
 class Child extends Parent {
-    // @Override 会报错，因为静态方法不能被重写
-    public static void hello() { System.out.println("Child.hello"); } // ✅ 隐藏
-    public        void hi()    { System.out.println("Child.hi");    } // ✅ 重写
-}
+    // 编译错误：'f()' cannot override 'f()' in 'Parent'; overridden method is final
+    // @Override
+    // void f() {
+    // }
 
-public class Demo {
-    public static void main(String[] args) {
-        Parent p = new Child();
-
-        p.hello();   // Parent.hello  —— 静态方法看“声明类型”
-        p.hi();      // Child.hi      —— 实例方法看“运行时类型”
-
-        Child.hello(); // Child.hello
-    }
-}
-```
-
-> **要点**：静态方法的调用分派在**编译期**按引用变量的声明类型确定；实例方法在**运行期**按实际对象类型确定（多态）。
-
-### 3.3 `main` 方法必须是 `public static void`
-
-JVM 调用 `main` 时**还没有创建任何对象**，所以必须通过类名调用 → 必须 `static`。
-
-```java
-public class MainDemo {
-    public static void main(String[] args) {
-        // JVM 直接调用 MainDemo.main(args)，无需 new MainDemo()
-    }
-}
-```
-
----
-
-## 四、`static` 代码块
-
-### 4.1 类加载时执行一次
-
-```java
-public class Config {
-    public static String url;
-    public static final int TIMEOUT;
-
-    // 静态代码块：类加载时执行，且只执行一次，按书写顺序执行
-    static {
-        System.out.println("静态代码块执行");
-        url = System.getProperty("app.url", "http://localhost");
-        TIMEOUT = 5000;
+    // 合法：这是重载，不是重写
+    void f(int x) {
+        System.out.println("Child.f(int)");
     }
 
-    static {
-        System.out.println("第二个静态代码块");
-    }
-
-    public Config() {
-        System.out.println("构造方法执行");
-    }
-
-    public static void main(String[] args) {
-        System.out.println("main 开始");
-        new Config();
-        new Config();
-    }
-}
-```
-
-**输出顺序：**
-
-```
-静态代码块执行
-第二个静态代码块
-main 开始
-构造方法执行
-构造方法执行
-```
-
-### 4.2 用途
-
-- 初始化静态变量（尤其是需要复杂逻辑的）
-- 加载配置文件、加载驱动（如 `Class.forName("com.mysql.cj.jdbc.Driver")`）
-- 初始化某些 `final` 常量
-
-### 4.3 顺序陷阱
-
-```java
-public class OrderDemo {
-    static int a = 10;
-
-    static {
-        a = 20;
-        b = 30;      // ✅ 可以赋值，因为 b 已声明
-    }
-
-    static int b = 40; // 之后又把 b 赋成 40，覆盖了 30
-
-    public static void main(String[] args) {
-        System.out.println(a); // 20
-        System.out.println(b); // 40
-    }
-}
-```
-
----
-
-## 五、`static` 内部类（静态嵌套类）
-
-### 5.1 与普通内部类的区别
-
-```java
-public class Outer {
-    private static int staticField = 100;
-    private        int instanceField = 200;
-
-    // 静态内部类：不持有外部类实例的引用
-    public static class StaticNested {
-        void show() {
-            System.out.println(staticField);        // ✅ 可以访问外部静态成员
-            // System.out.println(instanceField);   // ❌ 无法访问实例成员
-        }
-    }
-
-    // 非静态内部类：持有外部类实例的引用
-    public class Inner {
-        void show() {
-            System.out.println(staticField);        // ✅
-            System.out.println(instanceField);      // ✅
-        }
-    }
-
-    public static void main(String[] args) {
-        // 静态内部类：直接 new，不需要外部类对象
-        Outer.StaticNested n = new Outer.StaticNested();
-        n.show();
-
-        // 非静态内部类：必须先有外部类对象
-        Outer outer = new Outer();
-        Outer.Inner i = outer.new Inner();
-        i.show();
-    }
-}
-```
-
-**效果对比：**
-
-| 特性       | 静态内部类 `static class`     | 普通内部类 `class`       |
-|----------|--------------------------|---------------------|
-| 是否持有外部引用 | 否                        | 是                   |
-| 创建方式     | `new Outer.Nested()`     | `outer.new Inner()` |
-| 访问外部实例成员 | ❌ 不可以                    | ✅ 可以                |
-| 是否可能内存泄漏 | 否                        | 可能                  |
-| 典型应用     | `Map.Entry`、`Builder` 模式 | 需要访问外部状态的场景         |
-
----
-
-## 六、`static import` 静态导入（Java 5）
-
-```java
-// 普通方式
-import java.lang.Math;
-public class Demo1 {
-    public static void main(String[] args) {
-        System.out.println(Math.PI);
-        System.out.println(Math.max(3, 5));
-    }
-}
-```
-
-```java
-// 静态导入后：直接用方法名/字段名
-import static java.lang.Math.PI;
-import static java.lang.Math.*;
-
-public class Demo2 {
-    public static void main(String[] args) {
-        System.out.println(PI);       // 省略 Math.
-        System.out.println(max(3, 5)); // 省略 Math.
-        System.out.println(abs(-7));
-    }
-}
-```
-
-**建议**：适度使用，否则代码可读性会下降（读者分不清 `max` 是哪个类的）。常见于 JUnit
-测试：`import static org.junit.Assert.*;`
-
----
-
-## 七、接口中的 `static` 方法（Java 8+）
-
-```java
-public interface Vehicle {
-    // 抽象方法
-    void run();
-
-    // 静态方法：属于接口自身，只能通过接口名调用，不被实现类继承
-    static Vehicle create() {
-        return () -> System.out.println("默认车辆启动");
-    }
-
-    static int wheels() {
-        return 4;
-    }
-}
-
-class Car implements Vehicle {
+    // 合法：g 不是 final，可以重写
     @Override
-    public void run() { System.out.println("Car runs"); }
+    void g() {
+        System.out.println("Child.g");
+    }
+}
+```
+
+效果：
+
+- `final` 方法可以被子类继承，但不能被子类重写。
+- `final` 方法可以被重载。
+- `final` 方法不能是 `abstract`。
+- `private` 方法不能被重写，子类写同名方法只是“新方法”，不是重写：
+
+```java
+class P {
+    private void m() {
+        System.out.println("P.m");
+    }
 }
 
-public class InterfaceDemo {
-    public static void main(String[] args) {
-        Vehicle v = Vehicle.create();
-        v.run();
-
-        System.out.println(Vehicle.wheels()); // ✅
-        // System.out.println(Car.wheels()); // ❌ 实现类无法继承接口静态方法
+class Q extends P {
+    // 这不是重写，只是 Q 自己新定义的方法
+    void m() {
+        System.out.println("Q.m");
     }
 }
 ```
 
 ---
 
-## 八、`static` 的核心作用与效果总结
-
-### 8.1 作用
-
-1. **属于类，不属于对象**：类加载即可用，无需 `new`。
-2. **共享**：所有实例共享同一份数据（用于计数器、缓存、常量）。
-3. **生命周期长**：从类加载开始到 JVM 退出（或类卸载），一直存在。
-4. **内存占用优化**：工具类方法、公共常量不重复创建对象。
-
-### 8.2 关键约束与陷阱
-
-| 约束                       | 说明                                    |
-|--------------------------|---------------------------------------|
-| 静态方法不能有 `this` / `super` | 静态方法没有对象上下文                           |
-| 静态方法不能直接访问实例成员           | 只能访问静态成员，或通过对象引用访问                    |
-| 静态方法不能重写                 | 只能隐藏（`static` 不能变非 `static`，反之亦然）     |
-| 静态方法中可以 `new` 实例         | 允许，只是不能直接引用当前实例成员                     |
-| 静态变量线程不安全                | 多线程共享需注意，考虑 `volatile`/`synchronized` |
-| 静态代码块按顺序执行一次             | 类初始化阶段执行                              |
-| 静态成员在继承中可被隐藏             | 通过子类引用访问需注意分派规则                       |
-
-### 8.3 什么时候用 `static`？
-
-✅ **适合用 `static`：**
-
-- 工具方法（`Math.max`、`Collections.sort`）
-- 常量（`static final` 的 `PI`、`MAX_VALUE`）
-- 全局共享状态（配置、计数器、单例的实例引用）
-- 工厂方法（`Vehicle.create()`）
-- 不依赖实例状态且通用的逻辑
-
-❌ **不适合用 `static`：**
-
-- 需要访问实例状态的方法
-- 需要考虑线程安全且被多线程修改的共享数据（除非妥善加锁）
-- 面向对象中表示"每个对象独立状态"的属性（如人的姓名、年龄）
-
-### 8.4 一个完整的综合示例
+## 4. final 修饰成员变量：字段只能初始化一次
 
 ```java
-public class Employee {
-    private static int nextId = 1;             // 共享，自增 id 生成器
-    private static final String COMPANY = "Acme"; // 常量
+import java.util.ArrayList;
+import java.util.List;
 
-    private final int id;
-    private String name;
+class Person {
+    // 空白 final：声明时不赋值，必须在构造器或实例初始化块中赋值
+    final String name;
 
-    static {                                    // 类加载时执行
-        System.out.println("[Employee] 类初始化，公司=" + COMPANY);
-    }
+    // 声明时初始化
+    final int age = 18;
 
-    public Employee(String name) {
-        this.id = nextId++;
+    // 静态常量
+    static final String SPECIES = "Human";
+
+    // final 引用：引用不能变，但对象内容可改
+    final List<String> tags = new ArrayList<>();
+
+    Person(String name) {
         this.name = name;
     }
 
-    // 实例方法：可以访问静态成员
-    public void print() {
-        System.out.println(id + ": " + name + " @" + COMPANY);
-    }
+    void test() {
+        // 编译错误：Cannot assign a value to final variable 'name'
+        // name = "李四";
 
-    // 静态方法：工厂 + 统计
-    public static Employee create(String name) { return new Employee(name); }
-    public static int totalCreated() { return nextId - 1; }
+        // 合法：修改的是 List 对象内部内容，不是修改 tags 引用
+        tags.add("java");
 
-    // 静态内部类：Builder 模式
-    public static class Builder {
-        private String name;
-        public Builder name(String n) { this.name = n; return this; }
-        public Employee build() { return new Employee(name); }
-    }
-
-    public static void main(String[] args) {
-        Employee e1 = Employee.create("Alice");
-        Employee e2 = new Employee.Builder().name("Bob").build();
-        e1.print();
-        e2.print();
-        System.out.println("总创建数: " + Employee.totalCreated()); // 2
+        // 编译错误：Cannot assign a value to final variable 'tags'
+        // tags = new ArrayList<>();
     }
 }
 ```
 
-**输出：**
+关键点：
 
-```
-[Employee] 类初始化，公司=Acme
-1: Alice @Acme
-2: Bob @Acme
-总创建数: 2
+- `final` 字段必须初始化一次。
+- 实例 `final` 字段可以在：
+  1. 声明时初始化；
+  2. 实例初始化块中初始化；
+  3. 构造器中初始化。
+- 静态 `final` 字段可以在：
+  1. 声明时初始化；
+  2. 静态初始化块中初始化。
+- `final` 字段不能在普通方法中再次赋值。
+
+示例：
+
+```java
+class InitDemo {
+    final int a = 1;       // 声明时初始化
+    final int b;           // 空白 final
+    final int c;
+
+    static final int S1 = 10;
+    static final int S2;
+
+    {
+        b = 2;             // 实例初始化块
+    }
+
+    static {
+        S2 = 20;           // 静态初始化块
+    }
+
+    InitDemo() {
+        c = 3;
+    }
+
+    InitDemo(int x) {
+        c = x;
+    }
+
+    // 编译错误：不能在普通方法中给 final 字段赋值
+    // void change() {
+    //     c = 4;
+    // }
+}
 ```
 
 ---
 
-## 九、一句话总结
+## 5. final 引用：引用不可变，但对象内容可变
 
-> `static` 让成员从"对象级别"上升到"类级别"——**随类加载而生，被所有实例共享，可直接用类名调用**
-> ；代价是失去对象状态、不能访问实例成员、并且要注意共享带来的线程安全问题。
+这是最常见的误区。
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class FinalReferenceDemo {
+    public static void main(String[] args) {
+        final List<String> list = new ArrayList<>();
+
+        // 合法：修改对象内容
+        list.add("A");
+        list.add("B");
+
+        // 编译错误：不能重新赋值引用
+        // list = new ArrayList<>();
+
+        final int[] arr = {1, 2, 3};
+
+        // 合法：修改数组元素
+        arr[0] = 100;
+
+        // 编译错误：不能重新赋值数组引用
+        // arr = new int[]{4, 5, 6};
+    }
+}
+```
+
+效果：
+
+- `final` 只保证变量不能再指向另一个对象。
+- 不保证对象内部状态不变。
+- 如果要实现不可变对象，需要：`final` 字段 + 不可变类型 + 防御性拷贝 + 不暴露可变内部引用。
+
+```java
+import java.util.List;
+
+final class ImmutablePerson {
+    private final String name;
+    private final List<String> tags;
+
+    ImmutablePerson(String name, List<String> tags) {
+        this.name = name;
+        // 防御性拷贝，避免外部修改影响内部状态
+        this.tags = List.copyOf(tags);
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public List<String> tags() {
+        return tags;
+    }
+}
+```
+
+---
+
+## 6. final 修饰局部变量：只能赋值一次
+
+```java
+public class FinalLocalDemo {
+    public static void main(String[] args) {
+        final int x = 10;
+        // 编译错误：Cannot assign a value to final variable 'x'
+        // x = 20;
+
+        final int y;
+        y = 30;
+        // 编译错误：Variable 'y' might already have been assigned
+        // y = 40;
+
+        System.out.println(x + y);
+    }
+}
+```
+
+特点：
+
+- `final` 局部变量可以声明时赋值，也可以先声明后赋值一次。
+- 赋值后不能再改。
+- 常用于 lambda 或匿名内部类捕获。
+
+---
+
+## 7. final 修饰方法参数：方法内不能重新赋值
+
+```java
+public class FinalParamDemo {
+    void print(final String s) {
+        // 编译错误：Cannot assign a value to final variable 's'
+        // s = "other";
+
+        Runnable r = () -> System.out.println(s);
+        r.run();
+    }
+
+    void normal(int x) {
+        x = 100; // 非 final 参数可以重新赋值
+        System.out.println(x);
+    }
+}
+```
+
+效果：
+
+- `final` 参数在方法内部不能重新赋值。
+- 参数本身由调用者传入，方法内只能使用。
+- 可被 lambda/匿名内部类捕获。
+
+---
+
+## 8. final 与 lambda / 匿名内部类捕获
+
+Java 8 之后，lambda 和匿名内部类捕获的局部变量必须是 `final` 或 “effectively final”，即事实上的 final。
+
+```java
+public class LambdaFinalDemo {
+    public static void main(String[] args) {
+        int count = 1; // 没有修改，属于 effectively final
+        Runnable r1 = () -> System.out.println(count);
+        r1.run();
+
+        final int age = 18; // 显式 final
+        Runnable r2 = () -> System.out.println(age);
+        r2.run();
+
+        int number = 10;
+        // 如果取消下面注释，number 不再是 effectively final，
+        // 上面的 lambda 如果捕获 number 就会编译失败
+        // number = 20;
+    }
+
+    void test(final String msg) {
+        Runnable r = () -> System.out.println(msg);
+        r.run();
+    }
+}
+```
+
+注意：
+
+- 显式写 `final` 不是必须的。
+- 只要变量在初始化后没有再被赋值，就是 effectively final。
+- 一旦被重新赋值，就不能被 lambda 捕获。
+
+---
+
+## 9. static final 与编译期常量：注意内联风险
+
+```java
+class Constants {
+    public static final int MAX = 100;
+    public static final String NAME = "Java";
+
+    // 不是编译期常量，因为类型是 Integer，不是基本类型或 String
+    public static final Integer BOXED = 100;
+
+    // 不是常量表达式
+    public static final int RANDOM = Integer.parseInt("123");
+}
+
+class UseConstants {
+    int a = Constants.MAX;      // 编译时可能直接内联为 100
+    String b = Constants.NAME;  // 编译时可能直接内联为 "Java"
+}
+```
+
+说明：
+
+- `static final` 修饰的基本类型或 `String`，如果使用常量表达式初始化，属于编译期常量。
+- 使用处可能在编译时被内联。
+- 如果只修改 `Constants.MAX` 并只重新编译 `Constants`，而没有重新编译 `UseConstants`，`UseConstants` 中可能仍然是旧值。
+- 所以发布时通常需要整体重新编译依赖代码。
+
+---
+
+## 10. final 与多线程：final 字段有特殊初始化安全语义
+
+Java 内存模型对 `final`
+字段有特殊保证：正确构造并安全发布对象后，其他线程看到该对象引用时，至少能保证看到构造器中为 `final` 字段写入的值。
+
+```java
+class FinalSemantics {
+    final int x;
+    int y;
+
+    FinalSemantics() {
+        x = 1;
+        y = 2;
+    }
+}
+
+class Publisher {
+    volatile FinalSemantics ref;
+
+    void publish() {
+        ref = new FinalSemantics();
+    }
+
+    void consume() {
+        FinalSemantics o = ref;
+        if (o != null) {
+            int a = o.x; // final 字段：正确发布后保证看到 1
+            int b = o.y; // 这里由 volatile 发布保证可见；若数据竞争则不保证
+        }
+    }
+}
+```
+
+注意：
+
+- `final` 字段的初始化安全语义，不保证 `final` 引用对象内部状态不可变。
+- 如果构造器中 `this` 逸出，可能破坏这种保证。
+- `final` 不能替代 `volatile`、锁、线程安全集合等并发控制。
+- `final` 与 `volatile` 不能同时修饰同一个字段。
+
+---
+
+## 11. final 与接口、枚举、record、sealed
+
+```java
+interface Config {
+    // 接口字段隐式 public static final
+    int MAX = 100;
+}
+
+enum Color {
+    RED, GREEN;
+    // 枚举常量隐式 public static final
+}
+
+record Point(int x, int y) {
+    // record 类隐式 final
+}
+
+sealed interface Shape permits Circle, Square {
+}
+
+final class Circle implements Shape {
+}
+
+non-sealed class Square implements Shape {
+}
+```
+
+说明：
+
+- 接口字段天然是 `public static final`。
+- 枚举常量天然是 `public static final`。
+- `record` 类隐式 `final`，不能被继承。
+- Java 17 的 `sealed` 中，允许的子类可以声明为 `final`、`sealed` 或 `non-sealed`。
+
+---
+
+## 12. final 与反射：不推荐依赖反射修改 final
+
+```java
+import java.lang.reflect.Field;
+
+class ReflectFinal {
+    final int x = 1;
+}
+
+public class ReflectFinalDemo {
+    public static void main(String[] args) throws Exception {
+        ReflectFinal obj = new ReflectFinal();
+
+        Field f = ReflectFinal.class.getDeclaredField("x");
+        f.setAccessible(true);
+
+        // 某些 JDK/模块配置下可以修改实例 final 字段，但非常不推荐
+        // f.setInt(obj, 2);
+
+        System.out.println(obj.x);
+    }
+}
+```
+
+注意：
+
+- 反射修改 `final` 字段属于破坏封装，不推荐。
+- 对于 `static final` 编译期常量，直接引用处可能已经被内联，反射修改后直接访问仍可能是旧值。
+- 不同 JDK 版本、模块系统下行为限制不同，不应依赖。
+
+---
+
+## 13. 常见误区总结
+
+1. **final 引用不等于对象不可变**
+   `final List<String> list` 不能重新赋值，但可以 `list.add(...)`。
+
+2. **final 字段不等于编译期常量**
+   只有 `static final` 基本类型/String 且用常量表达式初始化，才可能是编译期常量。
+
+3. **final 类中的方法不能被覆盖**
+   因为类根本不能被继承。
+
+4. **final 方法可以重载，但不能重写**。
+
+5. **final 不能修饰构造器**
+   构造器不能被继承，也谈不上重写。
+
+6. **final 与 abstract 互斥**
+   `final abstract class`、`final abstract method` 都不合法。
+
+7. **final 与 volatile 不能同时修饰字段**。
+
+8. **final 不保证线程安全**
+   `final` 字段有初始化安全语义，但不能替代同步和安全发布。
+
+9. **实现不可变对象需要组合手段**
+   `final class` + `private final` 字段 + 不可变类型 + 防御性拷贝 + 不泄露 `this`。
+
+一句话总结：**final 限制的是“赋值一次、继承、重写”这些行为；它提高了安全性、可读性和某些场景下的优化与内存可见性保证，但不要把它误解为“对象完全不可变”或“天然线程安全”。
+**
