@@ -281,12 +281,10 @@ System.out.println(s1[0][0]);   // y → 内部数组仍是共享引用(浅)
 
 1. **优先用拷贝构造器或静态工厂**（`new Person(p)`），语义清晰、无异常、不依赖标记接口。
 2. **只有在性能极其敏感**（避免构造器开销）或**需要 `Cloneable` 多态语义**（如 `clone()` 多态分派）时才实现 `clone()`。
-3.
-若必须实现：`implements Cloneable` + `public X clone()` + `try { return (X) super.clone(); } catch (CloneNotSupportedException e) { throw new AssertionError(e); }`。
+3. 若必须实现：`implements Cloneable` + `public X clone()` + `try { return (X) super.clone(); } catch (CloneNotSupportedException e) { throw new AssertionError(e); }`。
 4. **深/浅拷贝语义必须在文档中写清楚**，否则调用方会踩坑。
 5. 对象图复杂（多层级引用、图结构）时首选**序列化或 JSON 序列化**深拷贝。
 
 ---
 
-一句话总结：`Object.clone()` 是一个 **native 的浅拷贝**，需要 `Cloneable` 作为许可开关，**用 `super.clone()` 触发真正的内存分配与字段复制
-**；引用字段共享是它最大的坑，需要手动或序列化做深拷贝。
+一句话总结：`Object.clone()` 是一个 **native 的浅拷贝**，需要 `Cloneable` 作为许可开关，**用 `super.clone()` 触发真正的内存分配与字段复制**；引用字段共享是它最大的坑，需要手动或序列化做深拷贝。
