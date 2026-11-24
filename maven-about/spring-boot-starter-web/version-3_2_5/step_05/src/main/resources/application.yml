@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    # 连接 URL (关键参数解析见下文)
+    url: jdbc:mysql://localhost:3306/my_test_database?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: rU^c*sM_SL1.ye
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    # HikariCP 连接池 (Spring Boot 默认，按需调优)
+    hikari:
+      maximum-pool-size: 10        # 最大连接数
+      minimum-idle: 5              # 最小空闲连接数
+      connection-timeout: 30000    # 获取连接超时(ms)
+      idle-timeout: 600000         # 空闲连接超时(ms)
+      max-lifetime: 1800000        # 连接最大存活时间(ms，应小于 MySQL 的 wait_timeout)
+
+  jpa:
+    hibernate:
+      ddl-auto: update             # 开发环境：自动更新表结构；生产环境建议改为 validate 或 none
+    show-sql: true                 # 控制台打印 SQL，便于调试
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect  # Spring Boot 3.x 通常可自动识别，显式指定更稳妥

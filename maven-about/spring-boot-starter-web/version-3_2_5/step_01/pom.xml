@@ -12,6 +12,14 @@
       <artifactId>spring-boot-starter-web</artifactId>
       <version>3.2.5</version>
     </dependency>
+
+    <!-- Lombok - 用于自动生成 getter/setter/toString 等方法 -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.30</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -24,7 +32,14 @@
         <configuration>
           <source>17</source>
           <target>17</target>
-          <!-- 核心配置：保留方法参数名 -->
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>1.18.30</version>
+            </path>
+          </annotationProcessorPaths>
+          <!-- 核心配置：保留方法参数名  修改后需要执行 mvn clean compile 以便修改的参数生效 -->
           <parameters>true</parameters>
           <!-- 合并所有编译参数 -->
           <compilerArgs>
