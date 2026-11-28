@@ -1,4 +1,4 @@
-package org.example;
+package com.example.demo;
 
 // 1. 导入必要的类
 import org.junit.jupiter.api.Test;          // 引入 @Test 注解

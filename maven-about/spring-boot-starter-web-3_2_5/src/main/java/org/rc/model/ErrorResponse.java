@@ -1,4 +1,4 @@
-package org.rc.exception;
+package org.rc.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ErrorResponse {
-    
+
     private String code;
-    
+
     private String message;
 }
